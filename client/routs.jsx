@@ -1,9 +1,13 @@
 import React from 'react';
+import {mount} from 'react-mounter';
+import App from '../App.jsx';
 
-FlowRouter.route ('/',
-  action(){
-    mount(
+import {MainLayout} from './Layouts/MainLayout.jsx';
 
-    )
+FlowRouter.route('/', {
+  action() {
+    mount(MainLayout, {
+      content: (<App />)
+    })
   }
 });
