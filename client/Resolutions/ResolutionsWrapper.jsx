@@ -8,25 +8,39 @@ Resolutions = new Mongo.Collection ("resolutions");
 
 export default class ResolutionsWrapper extends TrackerReact(React.Component) {
 
+  constructor() {
+    super();
+    this.state = {
+      subscription: {
+        resolutions: Meteor.subscribe("allResolutions")
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.state.subscription.resolutins.stop();
+  }
+
   resolutions() {
     return Resolutions.find().fetch();
   }
 
   render() {
     let res = this.resolutions();
-    console.log(res);
 
     if(res.length < 1) {
       return (<div>Loading</div>)
     }
-    console.log(res);
 
     return (
       <div>
-        <h1> My resolusions </h1>
+        <h1> My resolutions </h1>
         <ResolutionsForm />
-        <ul>
-          <ResolutionSingle resolution={res[0]} />
+      <ul className ="resolutions" >
+          {this.resolutions().map((resolution)=> {
+            return <ResolutionSingle key={resolution._id} resolution={resolution} />
+          })}
+
         </ul>
       </div>
     );
